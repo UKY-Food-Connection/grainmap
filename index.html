@@ -97,7 +97,7 @@
     $.getJSON("data/ky_counties.geojson", function(data) {
         countyLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-            baselayers.addLayer(layer)},
+            basedata.addLayer(layer)},
             fillOpacity: 1,
             weight: .25,
             opacity: 1,
@@ -110,7 +110,7 @@
     $.getJSON("data/surrounding_states.geojson", function(data) {
         surroundingLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-            baselayers.addLayer(layer)},
+            basedata.addLayer(layer)},
             fillOpacity: 0,
             weight: .25,
             opacity: 1,
@@ -121,7 +121,7 @@
     $.getJSON("data/urban_areas.geojson", function(data) {
         urban_areaLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-            baselayers.addLayer(layer)},
+            basedata.addLayer(layer)},
             fillOpacity: 1,
             weight: 0,
             opacity: 0,
