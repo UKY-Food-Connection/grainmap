@@ -38,6 +38,11 @@
         Stamen_TonerLite,
         Esri_WorldImagery;
 
+    // Create empty layers groups for the layer control object
+    var users = L.layerGroup(),
+        basedata = L.layerGroup();
+
+
     //A couple of alt-basemaps
     var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -61,7 +66,7 @@
     $.getJSON("data/brewers.geojson", function(data) {
         brewerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker (latlng, style(feature));
             }
@@ -71,7 +76,7 @@
     $.getJSON("data/distillers.geojson", function(data) {
         distillerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker (latlng, style(feature));
             }
@@ -81,7 +86,7 @@
     $.getJSON("data/millers.geojson", function(data) {
         millerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker (latlng, style(feature));
             }
@@ -92,7 +97,7 @@
     $.getJSON("data/ky_counties.geojson", function(data) {
         countyLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                addLayer(layer)},
+            baselayers.addLayer(layer)},
             fillOpacity: 1,
             weight: .25,
             opacity: 1,
@@ -105,7 +110,7 @@
     $.getJSON("data/surrounding_states.geojson", function(data) {
         surroundingLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                addLayer(layer)},
+            baselayers.addLayer(layer)},
             fillOpacity: 0,
             weight: .25,
             opacity: 1,
@@ -116,7 +121,7 @@
     $.getJSON("data/urban_areas.geojson", function(data) {
         urban_areaLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                addLayer(layer)},
+            baselayers.addLayer(layer)},
             fillOpacity: 1,
             weight: 0,
             opacity: 0,
