@@ -53,11 +53,6 @@
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
     });
 
-    // Create Map Object that automatically shows the project data over our alt-basemaps
-    var map = L.map('map',{
-        layers: [basedata]
-    });
-
 /*    //Get GeoJSON datasets
     $.getJSON("data/brewers.geojson", function(data) {
         brewerLayer = L.geoJson(data, {
@@ -125,7 +120,11 @@
         })
     });
 
-
+    // Create Map Object that automatically shows the project data over our alt-basemaps
+    var map = L.map('map',{
+        zoom: map.fitBounds(countyLayer.getBounds()),
+        layers: [basedata]
+    });
 
 /*    // Create Leaflet Control Object for Legend
     var legend = L.control({position: 'bottomright'});
@@ -151,9 +150,6 @@
         return div;
     };*/
 
-    //Set map zoom to KY scale
-    map.fitBounds(basedata.getBounds());
-    
 /*    // Add Legend to Map
     legend.addTo(map);*/
 
