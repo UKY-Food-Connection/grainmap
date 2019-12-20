@@ -175,14 +175,13 @@
         "Satellite Imagery": Esri_WorldImagery
     };
 
-    var overlayData = {
-        "Urban Areas": urban_areaLayer,
-        "County Boundaries": countyLayer
+    var background = {
+        "KY Data": basedata
     };
 
     // // Add layer controller to Map
     // L.control.layers(datasets, background, baselayers).addTo(map);
-    L.control.layers(baselayers, overlayData).addTo(map);
+    L.control.layers(baselayers, background).addTo(map);
 
     /*// Add Scale Bar to Map
     L.control.scale({position: 'bottomleft'}).addTo(map);*/
