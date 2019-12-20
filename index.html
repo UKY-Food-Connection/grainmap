@@ -28,57 +28,38 @@
 <script>
 
 
-    // // Create empty layers
-    // var councilLayer,
-    //     councilLabels,
-    //     markerLayer,
-    //     areaLayer,
-    //     tractLabels,
-    //     tractLayer,
-    //     streets;
+    // Create empty layers
+    var brewerLayer,
+        distillerLayer,
+        millerLayer,
+        countyLayer,
+        urban_areaLayer,
+        surroundingLayer,
+        Stamen_TonerLite,
+        Esri_WorldImagery;
 
-    // Add base map
-    var streets = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+    //A couple of alt-basemaps
+    var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abcd',
+    ext: 'png'
+    }),
+        Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+    // Create Map Object that automatically shows the project data over our alt-basemaps
+    var map = L.map('map',{
+        center: [38.0253406,-84.4752004],
+        zoom: 11,
         maxZoom: 17,
-        minZoom: 9
+        minZoom: 9,
+        layers: [Stamen_TonerLite]
     });
 
-    //Here's our alt-basemap
-    var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    });
-
-    // // Create empty layer groups for the layer control object
-    // var locations = L.layerGroup();
-
-    // Style information for the marker layer
-    function setColor(type) {
-        return type == 'Distiller' ? "#8CC739" :
-                type == 'Distiller - NQ3 by the drink' ? "#8CC739" :
-                type == 'Restaurant, Microbrewery, Bar' ? "#8CC739" :
-                type == 'Brewer' ? "#8CC739" :
-                type == 'Microbrewery' ? "#21BEDE" :
-                type == 'Microbrewery w\/ Bar & Beer Package Sales' ? "#8CC739" :
-                type == 'Bar with Package Sales () beer' ? "#085DAD" :
-                type == 'Storage \/ Warehouse' ? "#085DAD" :
-                type == 'Small Farm Winery' ? "#21BEDE" :
-                type == 'Restaurant' ? "#21BEDE" :
-                    "#bae4bc";
-    }
-
-    function style(feature) {
-        return {
-            fillColor: setColor(feature.properties.type),
-            color: "white",
-            fillOpacity: 0.9,
-            radius: 5
-        };
-    }
-
-    //Get GeoJSON and put it in the project layergroup
-    $.getJSON("data/data.geojson", function(data) {
-        markerLayer = L.geoJson(data, {
+/*    //Get GeoJSON datasets
+    $.getJSON("data/brewers.geojson", function(data) {
+        brewerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
                 projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
             pointToLayer: function (feature, latlng) {
@@ -87,161 +68,65 @@
         })
     });
 
-    // // Get GeoJSON and add it to project layergroup too
-    // $.getJSON("data/areas.geojson", function(data) {
-    //     areaLayer = L.geoJson(data, {
-    //         onEachFeature: function ( feature, layer ){
-    //             projects.addLayer(layer)},
-    //         fillOpacity: 0.7,
-    //         weight: 2,
-    //         opacity: 1,
-    //         color: 'white',
-    //         dashArray: '3',
-    //         fillColor: '#ccff33'
-    //     })
-    // });
-
-    // Create Map Object that automatically shows the project data over a street basemap
-    var map = L.map('map',{
-        center: [38.0253406,-84.4752004],
-        zoom: 11,
-        // layers: [streets, projects]
-        layers: [locations]
-    });
-
-/*    // Get GeoJSON, put it in the council layergroup and assign a custom icon to each district number
-  $.getJSON("data/council_labels.geojson", function(data) {
-      councilLabels = L.geoJson(data, {
-          onEachFeature: function ( feature, layer ){
-            council.addLayer(layer)},
-          pointToLayer: function (feature, latlng) {
-              if (feature.properties.DISTRICT == "1") {
-                  var marker = L.marker(latlng, {icon: oneIcon});
-              } else if (feature.properties.DISTRICT == "2") {
-                  var marker = L.marker(latlng, {icon: twoIcon});
-              } else if (feature.properties.DISTRICT == "3") {
-                  var marker = L.marker(latlng, {icon: threeIcon});
-              } else if (feature.properties.DISTRICT == "4") {
-                  var marker = L.marker(latlng, {icon: fourIcon});
-              } else if (feature.properties.DISTRICT == "5") {
-                  var marker = L.marker(latlng, {icon: fiveIcon});
-              } else if (feature.properties.DISTRICT == "6") {
-                  var marker = L.marker(latlng, {icon: sixIcon});
-              } else if (feature.properties.DISTRICT == "7") {
-                  var marker = L.marker(latlng, {icon: sevenIcon});
-              } else if (feature.properties.DISTRICT == "8") {
-                  var marker = L.marker(latlng, {icon: eightIcon});
-              } else if (feature.properties.DISTRICT == "9") {
-                  var marker = L.marker(latlng, {icon: nineIcon});
-              } else if (feature.properties.DISTRICT == "10") {
-                  var marker = L.marker(latlng, {icon: tenIcon});
-              } else if (feature.properties.DISTRICT == "11") {
-                  var marker = L.marker(latlng, {icon: elevenIcon});
-              } else {
-                  var marker = L.marker(latlng,{icon: twelveIcon});
-              };
-              return marker;
-          }
-      })
-  });*/
-
-    // Create Custom Icons Here
-    // Icon Class
-    var labelIcon = L.Icon.extend({
-        options:{
-            iconSize: [20,20],
-            iconAnchor: [18,18],
-            popupAnchor: [0,-6]
-        }
-    });
-
-    // Create specific icons for council districts
-    var oneIcon = new labelIcon({iconUrl: 'images/one.svg'});
-    var twoIcon = new labelIcon({iconUrl: 'images/two.svg'});
-    var threeIcon = new labelIcon({iconUrl: 'images/three.svg'});
-    var fourIcon = new labelIcon({iconUrl: 'images/four.svg'});
-    var fiveIcon = new labelIcon({iconUrl: 'images/five.svg'});
-    var sixIcon = new labelIcon({iconUrl: 'images/six.svg'});
-    var sevenIcon = new labelIcon({iconUrl: 'images/seven.svg'});
-    var eightIcon = new labelIcon({iconUrl: 'images/eight.svg'});
-    var nineIcon = new labelIcon({iconUrl: 'images/nine.svg'});
-    var tenIcon = new labelIcon({iconUrl: 'images/ten.svg'});
-    var elevenIcon = new labelIcon({iconUrl: 'images/eleven.svg'});
-    var twelveIcon = new labelIcon({iconUrl: 'images/twelve.svg'});
-
-    // Get GeoJSON and put it in the council layergroup too
-    $.getJSON("data/council_lines.geojson",function(data){
-        councilLayer = L.geoJson(data, {
+    $.getJSON("data/distillers.geojson", function(data) {
+        distillerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                council.addLayer(layer)},
-            weight: 2,
-            color: 'black',
-            dashArray: '3',
+                projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker (latlng, style(feature));
+            }
         })
     });
 
-    // // Get GeoJSON, put it in the tract layergroup and assign a custom icon to each tract number
-    // $.getJSON("data/council_labels.geojson", function(data) {
-    //     tractLabels = L.geoJson(data, {
-    //         onEachFeature: function ( feature, layer ){
-    //             tracts.addLayer(layer)},
-    //         pointToLayer: function (feature, latlng) {
-    //             if (feature.properties.DISTRICT == "1") {
-    //                 var marker = L.marker(latlng, {icon: oneIcon});
-    //             } else if (feature.properties.DISTRICT == "2") {
-    //                 var marker = L.marker(latlng, {icon: twoIcon});
-    //             } else if (feature.properties.DISTRICT == "3") {
-    //                 var marker = L.marker(latlng, {icon: threeIcon});
-    //             } else if (feature.properties.DISTRICT == "4") {
-    //                 var marker = L.marker(latlng, {icon: fourIcon});
-    //             } else if (feature.properties.DISTRICT == "5") {
-    //                 var marker = L.marker(latlng, {icon: fiveIcon});
-    //             } else if (feature.properties.DISTRICT == "6") {
-    //                 var marker = L.marker(latlng, {icon: sixIcon});
-    //             } else if (feature.properties.DISTRICT == "7") {
-    //                 var marker = L.marker(latlng, {icon: sevenIcon});
-    //             } else if (feature.properties.DISTRICT == "8") {
-    //                 var marker = L.marker(latlng, {icon: eightIcon});
-    //             } else if (feature.properties.DISTRICT == "9") {
-    //                 var marker = L.marker(latlng, {icon: nineIcon});
-    //             } else if (feature.properties.DISTRICT == "10") {
-    //                 var marker = L.marker(latlng, {icon: tenIcon});
-    //             } else if (feature.properties.DISTRICT == "11") {
-    //                 var marker = L.marker(latlng, {icon: elevenIcon});
-    //             } else {
-    //                 var marker = L.marker(latlng,{icon: twelveIcon});
-    //             };
-    //             return marker;
-    //         }
-    //     })
-    // });
-
-    // // Create specific icons for census tracts
-    // var oneIcon = new labelIcon({iconUrl: 'images/one.svg'});
-    // var twoIcon = new labelIcon({iconUrl: 'images/two.svg'});
-    // var threeIcon = new labelIcon({iconUrl: 'images/three.svg'});
-    // var fourIcon = new labelIcon({iconUrl: 'images/four.svg'});
-    // var fiveIcon = new labelIcon({iconUrl: 'images/five.svg'});
-    // var sixIcon = new labelIcon({iconUrl: 'images/six.svg'});
-    // var sevenIcon = new labelIcon({iconUrl: 'images/seven.svg'});
-    // var eightIcon = new labelIcon({iconUrl: 'images/eight.svg'});
-    // var nineIcon = new labelIcon({iconUrl: 'images/nine.svg'});
-    // var tenIcon = new labelIcon({iconUrl: 'images/ten.svg'});
-    // var elevenIcon = new labelIcon({iconUrl: 'images/eleven.svg'});
-    // var twelveIcon = new labelIcon({iconUrl: 'images/twelve.svg'});
-
-    // Get GeoJSON and put it in the tract layergroup
-    $.getJSON("data/tract_lines.geojson",function(data){
-        tractLayer = L.geoJson(data, {
+    $.getJSON("data/millers.geojson", function(data) {
+        millerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-                tracts.addLayer(layer)},
-            weight: 2,
-            color: 'black',
+                projects.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker (latlng, style(feature));
+            }
+        })
+    });*/
+
+    // Get GeoJSON map data
+    $.getJSON("data/ky_counties.geojson", function(data) {
+        countyLayer = L.geoJson(data, {
+            onEachFeature: function ( feature, layer ){
+                projects.addLayer(layer)},
+            fillOpacity: 1,
+            weight: .25,
+            opacity: 1,
+            color: '#D3D3D3',
             dashArray: '3',
-        }).addLayer(tracts);
+            fillColor: '#264653'
+        })
     });
 
-    // Create Leaflet Control Object for Legend
+    $.getJSON("data/surrounding_states.geojson", function(data) {
+        surroundingLayer = L.geoJson(data, {
+            onEachFeature: function ( feature, layer ){
+                projects.addLayer(layer)},
+            fillOpacity: 0,
+            weight: .25,
+            opacity: 1,
+            color: '#D3D3D3'
+        })
+    });
+
+    $.getJSON("data/urban_areas.geojson", function(data) {
+        urban_areaLayer = L.geoJson(data, {
+            onEachFeature: function ( feature, layer ){
+                projects.addLayer(layer)},
+            fillOpacity: 1,
+            weight: 0,
+            opacity: 0,
+            fillColor: '#BFDFEC'
+        })
+    });
+
+
+
+/*    // Create Leaflet Control Object for Legend
     var legend = L.control({position: 'bottomright'});
 
     // Function that runs when legend is added to map
@@ -249,10 +134,10 @@
 
         // Create Div Element and Populate it with HTML
         var div = L.DomUtil.create('div', 'legend');
-        div.innerHTML += "<b>"+'Type of Assistance'+"</b>"+"<br>";
+        div.innerHTML += "<b>"+'Type of Grain User'+"</b>"+"<br>";
 
-        types = ['ownership', 'repair', 'preservation'];
-        labels = ['Homeownership','Critical Home Repairs','Home Preservation'];
+        types = ['brewerLayer', 'distillerLayer', 'millerLayer'];
+        labels = ['Brewer','Distiller','Millers & Bakeries'];
 
         for (var i = 0; i < types.length; i++) {
             div.innerHTML +=
@@ -263,27 +148,39 @@
         div.innerHTML += '<hr><i style="background: #ccff33"></i><p>Cleanup Projects</p>';
 
         return div;
-    };
+    };*/
 
-    // Add Legend to Map
-    legend.addTo(map);
+/*    // Add Legend to Map
+    legend.addTo(map);*/
 
     // Create groupings for layer controller
-    var boundaries = {
-        "Council Districts": council,
-        "Census Tracts": tracts
+/*    var datasets = {
+        "Brewers": brewerLayer,
+        "Distillers": distillerLayer,
+        "Millers & Bakeries": millerLayer
     };
 
+    var background = {
+        "County Boundaries": countyLayer,
+        "Urban Areas": urban_areaLayer
+    };*/
+
     var baselayers = {
-        "Satellite Imagery": sat,
-        "Street Map": streets
-    }
+        "Street Map": Stamen_TonerLite,
+        "Satellite Imagery": Esri_WorldImagery
+    };
+
+    var overlayData = {
+        "Urban Areas": urban_areaLayer,
+        "County Boundaries": countyLayer
+    };
 
     // // Add layer controller to Map
-    L.control.layers(baselayers, boundaries).addTo(map);
+    // L.control.layers(datasets, background, baselayers).addTo(map);
+    L.control.layers(baselayers, overlayData).addTo(map);
 
-    // Add Scale Bar to Map
-    L.control.scale({position: 'bottomleft'}).addTo(map);
+    /*// Add Scale Bar to Map
+    L.control.scale({position: 'bottomleft'}).addTo(map);*/
 </script>
 </body>
 </html>
