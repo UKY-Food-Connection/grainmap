@@ -55,8 +55,6 @@
 
     // Create Map Object that automatically shows the project data over our alt-basemaps
     var map = L.map('map',{
-        center: [38.0253406,-84.4752004],
-        zoom: 18,
         layers: [basedata]
     });
 
@@ -153,6 +151,9 @@
         return div;
     };*/
 
+    //Set map zoom to KY scale
+    map.fitBounds(basedata.getBounds());
+    
 /*    // Add Legend to Map
     legend.addTo(map);*/
 
