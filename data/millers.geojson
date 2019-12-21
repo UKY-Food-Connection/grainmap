@@ -11,6 +11,6 @@
 { "type": "Feature", "properties": { "Business T": "Bakery", "Name": "Bluegrass Baking Co.", "Address": "3101 Clays Mill Rd # 108", "Address_2": null, "City": "Lexington", "State": "KY", "Zipcode": 40503, "X": -84.53024, "Y": 38.02754 }, "geometry": { "type": "Point", "coordinates": [ -84.53024, 38.02754 ] } },
 { "type": "Feature", "properties": { "Business T": "Miller", "Name": "Sunflower Sundries", "Address": "434 Dividing Ridge Rd", "Address_2": null, "City": "Mt Olivet", "State": "KY", "Zipcode": 41064, "X": -83.95179, "Y": 38.51491 }, "geometry": { "type": "Point", "coordinates": [ -83.95179, 38.51491 ] } },
 { "type": "Feature", "properties": { "Business T": "Miller", "Name": "Great Bagel", "Address": "3650 Boston Road", "Address_2": "Suite 108", "City": "Lexington", "State": "KY", "Zipcode": 40514, "X": -84.55209, "Y": 37.97896 }, "geometry": { "type": "Point", "coordinates": [ -84.55209, 37.97896 ] } },
-{ "type": "Feature", "properties": { "Business T": "Bakery", "Name": "Gluten-Free Miracles Bakery & Cafe", "Address": "145 Burt Rd`", "Address_2": null, "City": "Lexington", "State": "KY", "Zipcode": 40503, "X": -84.51904, "Y": 38.00799 }, "geometry": { "type": "Point", "coordinates": [ -84.51904, 38.00799 ] } }
+{ "type": "Feature", "properties": { "Business T": "Bakery", "Name": "Gluten-Free Miracles Bakery & Cafe", "Address": "145 Burt Rd", "Address_2": null, "City": "Lexington", "State": "KY", "Zipcode": 40503, "X": -84.51904, "Y": 38.00799 }, "geometry": { "type": "Point", "coordinates": [ -84.51904, 38.00799 ] } }
 ]
 }

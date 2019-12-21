@@ -3,183 +3,239 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ky Grain Map</title>
+    
+    <title>KY Grain Users</title>
+    
+    <meta charset="utf-8" />
+    
+    <!-- Load CSS -->
     <link rel="stylesheet" href="css/basic.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
-   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-   crossorigin=""></script>    
-
-
+     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+    
+    <!-- Load Leaflet MarkerCluster scripts -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>-->
+    
+    <!-- Load more Leaflet MarkerCluster stuff!-->
+    <!--<script src="https://unpkg.com/leaflet.markercluster.layersupport@2.0.1/dist/leaflet.markercluster.layersupport.js"></script>-->
+    
 </head>
 <body>
 
-<h1>Grain User Locations</h1>
+<h1> Kentucky Grains</h1>
 
-<div id="map"></div>
-
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-
+<div id="map" style="width: 700px; height: 400px;"></div>
+    
+ <!-- Load JQuery -->  
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
+    
 <script>
 
-
-    // Create empty layers
-    var brewerLayer,
+// Create empty layers
+/*    var brewerLayer,
         distillerLayer,
         millerLayer,
+        statesLayer,
         countyLayer,
-        urban_areaLayer,
-        surroundingLayer,
-        Stamen_TonerLite,
-        Esri_WorldImagery;
+        urban_areaLayer*/
+    
+// Create empty layerGroups for the layer control object
+   /* var users = L.layerGroup(), // for the user datasets (brewers, distillers, millers & bakeries)
+        brewers = L.layerGroup(),
+        distillers = L.layerGroup(),
+        millers = L.layerGroup(),
+        counties = L.layerGroup(), //for the Ky county outlines
+        urban_areas = L.layerGroup(); // for the urban areas*/
 
-    // Create empty layers groups for the layer control object
-    var users = L.layerGroup(),
-        basedata = L.layerGroup();
-
-
-    //A couple of alt-basemaps
-    var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
-    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    subdomains: 'abcd',
-    ext: 'png'
-    }),
-        Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    //Create empty layerSupportGroups for the clustering script
+/*    var brewerLayerSupportGroup = L.markerClusterGroup.layerSupport(),
+        distillerLayerSupportGroup = L.markerClusterGroup.layerSupport(),
+        millerLayerSupportGroup = L.markerClusterGroup.layerSupport();*/
+    
+    // Create empty layerGroups for the layer control object
+    var brewers = L.layerGroup(),
+        distillers = L.layerGroup(),
+        millers = L.layerGroup(),
+        states = L.layerGroup(),
+        counties = L.layerGroup(), 
+        urban_areas = L.layerGroup(); 
+    
+    
+// Create Map Object centered on the middle of Kentucky
+    var map = L.map('map', {
+        center: [37.7, -85.8], // centered on KY
+        zoom: 7
     });
 
-/*    //Get GeoJSON datasets
+    
+// Create additional map panes to fix layering issue
+    map.createPane("pane200").style.zIndex = 200; // tile pane
+    map.createPane("pane450").style.zIndex = 450; // between overlays and shadows
+    map.createPane("pane600").style.zIndex = 600; // marker pane
+ 
+// Add base map
+var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+});
+
+// Highlight the active point
+/*var activePoint;
+
+function highlightFeature(e) {
+	if (activePoint) {
+		activePoint.setStyle(style(activePoint.feature));
+	};
+	
+	var layer = e.target;
+	activePoint = e.target;
+	
+	
+	activePoint.setStyle({
+		fillColor: '#ffffff',
+	});
+}*/
+    
+    // Use JQuery to get our geojson data
     $.getJSON("data/brewers.geojson", function(data) {
         brewerLayer = L.geoJson(data, {
-            onEachFeature: function ( feature, layer ){
-            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            onEachFeature: function (feature, layer){
+                brewers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.LicenseeName+'</b><br>DBA: '+feature.properties.DBA+'<br>'+feature.properties.Address+'<br>'+feature.properties.City+', KY')},
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker (latlng, style(feature));
+                return L.circleMarker (latlng, {
+                    pane: "pane600",
+                    radius: 3,
+                    color: '#ffffff',
+                    weight: .5, 
+                    fillColor: '#E9C46A',
+                    fillOpacity: 1
+                });
             }
         })
     });
-
-    $.getJSON("data/distillers.geojson", function(data) {
+    
+        $.getJSON("data/distillers.geojson", function(data) {
         distillerLayer = L.geoJson(data, {
-            onEachFeature: function ( feature, layer ){
-            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+            onEachFeature: function (feature, layer){
+                distillers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.LicenseeName+'</b><br>DBA: '+feature.properties.DBA+'<br>'+feature.properties.Address+'<br>'+feature.properties.City+', KY')},
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker (latlng, style(feature));
+                return L.circleMarker (latlng, {
+                    pane: "pane600",
+                    radius: 3,
+                    color: '#ffffff', 
+                    weight: .5, 
+                    fillColor: '#F4A261',
+                    fillOpacity: 1
+                });
             }
         })
     });
-
-    $.getJSON("data/millers.geojson", function(data) {
+    
+        $.getJSON("data/millers.geojson", function(data) {
         millerLayer = L.geoJson(data, {
             onEachFeature: function ( feature, layer ){
-            users.addLayer(layer), layer.bindPopup(feature.properties.LicenseeName+" "+feature.properties.City)},
+                millers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Name+"</b><br>"+feature.properties.Address+"<br>"+feature.properties.City+', KY')},
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker (latlng, style(feature));
+                return L.circleMarker (latlng, { 
+                pane: "pane600",
+                radius: 3,
+                color: '#ffffff',
+                weight: .5,
+                fillColor: '#2A9D8F',
+                fillOpacity: 1
+                });
             }
         })
-    });*/
-
-    // Get GeoJSON map data
-    $.getJSON("data/ky_counties.geojson", function(data) {
-        countyLayer = L.geoJson(data, {
-            onEachFeature: function ( feature, layer ){
-            basedata.addLayer(layer)},
-            fillOpacity: 1,
-            weight: .25,
-            opacity: 1,
-            color: '#D3D3D3',
-            dashArray: '3',
-            fillColor: '#264653'
-        })
     });
-
-    $.getJSON("data/surrounding_states.geojson", function(data) {
-        surroundingLayer = L.geoJson(data, {
-            onEachFeature: function ( feature, layer ){
-            basedata.addLayer(layer)},
-            fillOpacity: 0,
-            weight: .25,
-            opacity: 1,
-            color: '#D3D3D3'
-        })
-    });
-
-    $.getJSON("data/urban_areas.geojson", function(data) {
+    
+    // Get geojson background layers
+        $.getJSON("data/urban_areas.geojson", function(data) {
         urban_areaLayer = L.geoJson(data, {
+            //pane: 'urban_areas', 
             onEachFeature: function ( feature, layer ){
-            basedata.addLayer(layer)},
-            fillOpacity: 1,
+            urban_areas.addLayer(layer)},
+            pane: "pane450",
+            fillOpacity: .25,
             weight: 0,
             opacity: 0,
             fillColor: '#BFDFEC'
-        })
+        }).addTo(map);
+           //map.fitBounds(urban_areaLayer.getBounds()); // automatically fits the map to boundaries of this layer
+    });
+    
+   $.getJSON("data/ky_counties.geojson", function(data) {
+        countyLayer = L.geoJson(data, {
+            onEachFeature: function ( feature, layer ){
+            counties.addLayer(layer)},
+            weight: 1,
+            opacity: 1,
+            color: '#D3D3D3',
+            //dashArray: '3',
+            fillColor: '#264653',
+            fillOpacity: 1
+        }).addTo(map);
     });
 
-    // Create Map Object that automatically shows the project data over our alt-basemaps
-    var map = L.map('map',{
-        zoom: map.fitBounds(countyLayer.getBounds()),
-        layers: [basedata]
+   $.getJSON("data/surrounding_states.geojson", function(data) {
+        statesLayer = L.geoJson(data, {
+            onEachFeature: function ( feature, layer ){
+            states.addLayer(layer)},
+            pane: "pane200",
+            weight: 1,
+            opacity: 1,
+            color: '#D3D3D3',
+            //dashArray: '3',
+            fillColor: '#ffffff',
+            fillOpacity: 1
+        }).addTo(map);
     });
 
-/*    // Create Leaflet Control Object for Legend
-    var legend = L.control({position: 'bottomright'});
 
-    // Function that runs when legend is added to map
-    legend.onAdd = function (map) {
-
-        // Create Div Element and Populate it with HTML
-        var div = L.DomUtil.create('div', 'legend');
-        div.innerHTML += "<b>"+'Type of Grain User'+"</b>"+"<br>";
-
-        types = ['brewerLayer', 'distillerLayer', 'millerLayer'];
-        labels = ['Brewer','Distiller','Millers & Bakeries'];
-
-        for (var i = 0; i < types.length; i++) {
-            div.innerHTML +=
-                '<i class="circle" style="background:' + setColor(types[i]) + '"></i> ' +
-                (types[i] ? labels[i] + '<br>' : '+');
-        }
-
-        div.innerHTML += '<hr><i style="background: #ccff33"></i><p>Cleanup Projects</p>';
-
-        return div;
-    };*/
-
-/*    // Add Legend to Map
-    legend.addTo(map);*/
-
-    // Create groupings for layer controller
-/*    var datasets = {
-        "Brewers": brewerLayer,
-        "Distillers": distillerLayer,
-        "Millers & Bakeries": millerLayer
+// Add marker cluster group magic
+/*    brewerLayerSupportGroup.addTo(map);
+    distillerLayerSupportGroup.addTo(map);
+    millerLayerSupportGroup.addTo(map);
+    brewerLayerSupportGroup.checkIn(brewers)
+    distillerLayerSupportGroup.checkIn(distillers)
+    millerLayerSupportGroup.checkIn(millers)*/
+    
+// Add layers to map so they are automatically selected in the layer control
+    map.addLayer(brewers)
+    map.addLayer(distillers)
+    map.addLayer(millers)
+    
+// Create groupings for layer controller
+    var baseLayers = {
+        "Basemap": basemap
     };
-
-    var background = {
-        "County Boundaries": countyLayer,
-        "Urban Areas": urban_areaLayer
-    };*/
-
-    var baselayers = {
-        "Street Map": Stamen_TonerLite,
-        "Satellite Imagery": Esri_WorldImagery
+    
+    var userLayers = {
+        "Brewers": brewers,
+        "Distillers": distillers,
+        "Millers & Bakeries": millers
     };
+    
+    var colorLayers = {
+        "County Outlines": counties,
+        "Urban Areas": urban_areas
+    }
+    
+// Add layer controller to Map
+    L.control.layers(null, userLayers).addTo(map); // the first item is always a radio button
 
-    var background = {
-        "KY Data": basedata
-    };
 
-    // // Add layer controller to Map
-    // L.control.layers(datasets, background, baselayers).addTo(map);
-    L.control.layers(baselayers, background).addTo(map);
 
-    /*// Add Scale Bar to Map
-    L.control.scale({position: 'bottomleft'}).addTo(map);*/
 </script>
 </body>
 </html>

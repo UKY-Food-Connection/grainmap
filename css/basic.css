@@ -3,10 +3,11 @@
     /*font-family: 'Open Sans', Helvetica, sans-serif;*/
 /*}*/
 
-html, body, #map {
+html, body #map {
     height: 100%;
     width: 100%;
     font-family: Lato, sans-serif;
+    background: #ffffff;
 }
 
 img {
@@ -27,16 +28,17 @@ p {
 /*}*/
 
 h1 {
-    position: absolute;
-    z-index: 100;
+    /*position: absolute;*/
+    float: left;
+    z-index: 700;
     top: 10px;
     left: 60px;
     padding: 8px 15px;
     margin: 0;
-    color: whitesmoke;
+    color: #3a3a3a;
     font-size: 1.5em;
-    background: rgba(25, 25, 25, 0.8);
-    border-radius: 5px;
+    //background: rgba(25, 25, 25, 0.8);
+    //border-radius: 5px;
 }
 
 /*#wrapper {*/
