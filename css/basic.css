@@ -3,10 +3,16 @@
     /*font-family: 'Open Sans', Helvetica, sans-serif;*/
 /*}*/
 
-html, body #map {
+html, body {
     height: 100%;
     width: 100%;
     font-family: Lato, sans-serif;
+    background: #ffffff;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
     background: #ffffff;
 }
 
