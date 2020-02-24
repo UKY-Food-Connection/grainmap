@@ -19,7 +19,8 @@
         "Zipcode": 40347,
         "X": -84.65776,
         "Y": 38.13416,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -41,7 +42,8 @@
         "Zipcode": 40223,
         "X": -85.53038,
         "Y": 38.26267,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -63,7 +65,8 @@
         "Zipcode": 42240,
         "X": -87.48754,
         "Y": 36.85608,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -85,7 +88,8 @@
         "Zipcode": 42240,
         "X": -87.39499,
         "Y": 36.80544,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -107,7 +111,8 @@
         "Zipcode": 40008,
         "X": -85.34459,
         "Y": 37.91879,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -129,7 +134,8 @@
         "Zipcode": 40507,
         "X": -84.49702,
         "Y": 38.04668,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -151,7 +157,8 @@
         "Zipcode": 40503,
         "X": -84.53024,
         "Y": 38.02754,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -173,7 +180,8 @@
         "Zipcode": 41064,
         "X": -83.95179,
         "Y": 38.51491,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -195,7 +203,8 @@
         "Zipcode": 40514,
         "X": -84.55209,
         "Y": 37.97896,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
@@ -217,7 +226,8 @@
         "Zipcode": 40503,
         "X": -84.51904,
         "Y": 38.00799,
-        "Source": "KY Dept of Ag"
+        "Source": "KY Dept of Ag",
+        "Updated": "2019-06-18"
       },
       "geometry": {
         "type": "Point",
