@@ -2,6 +2,7 @@
     var brewers = L.layerGroup(),
         distillers = L.layerGroup(),
         millers = L.layerGroup(),
+	farmers = L.layerGroup(),
         states = L.layerGroup(),
         counties = L.layerGroup(), 
         urban_areas = L.layerGroup(); 
@@ -78,6 +79,23 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
             }
         })
     });
+
+	$.getJSON("data/farmers.geojson", function(data) {
+		farmerLayer = L.geoJson(data, {
+		    onEachFeature: function ( feature, layer ){
+			farmers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Farm_Name+"</b><br>"+feature.properties.Address+"<br>"+feature.properties.City+', KY')},
+		    pointToLayer: function (feature, latlng) {
+			return L.circleMarker (latlng, { 
+			pane: "pane600",
+			radius: 3,
+			color: '#ffffff',
+			weight: .5,
+			fillColor: '#729E2B',
+			fillOpacity: 1
+			});
+		    }
+		})
+	    });
     
 // Get geojson background layers
         $.getJSON("data/urban_areas.geojson", function(data) {
@@ -125,6 +143,7 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
     map.addLayer(brewers)
     map.addLayer(distillers)
     map.addLayer(millers)
+    map.addLayer(farmers)
     
 // Create groupings for layer controller
     var baseLayers = {
@@ -135,6 +154,7 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
         "Brewers": brewers,
         "Distillers": distillers,
         "Millers & Bakeries": millers
+	"Farmers": farmers
     };
     
     var colorLayers = {
