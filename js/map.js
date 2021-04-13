@@ -83,8 +83,9 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
 	    $.getJSON("data/farmers.geojson", function(data) {
 		farmerLayer = L.geoJson(data, {
 		    onEachFeature: function ( feature, layer ){
-			farmers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Farm_Name+"</b><br>"+feature.properties.Address+"<br>"+feature.properties.City+', KY')},
-		    pointToLayer: function (feature, latlng) {
+			farmers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Farm_Name+'</b>')},
+		    //farmers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Farm_Name+"</b><br>"+feature.properties.Address+"<br>"+feature.properties.City+', KY')},
+            pointToLayer: function (feature, latlng) {
 			return L.circleMarker (latlng, { 
 			pane: "pane600",
 			radius: 3,
