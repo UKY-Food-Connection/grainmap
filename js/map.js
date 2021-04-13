@@ -2,7 +2,7 @@
     var brewers = L.layerGroup(),
         distillers = L.layerGroup(),
         millers = L.layerGroup(),
-	farmers = L.layerGroup(),
+	    farmers = L.layerGroup(),
         states = L.layerGroup(),
         counties = L.layerGroup(), 
         urban_areas = L.layerGroup(); 
@@ -80,7 +80,7 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
         })
     });
 
-	$.getJSON("data/farmers.geojson", function(data) {
+	    $.getJSON("data/farmers.geojson", function(data) {
 		farmerLayer = L.geoJson(data, {
 		    onEachFeature: function ( feature, layer ){
 			farmers.addLayer(layer), layer.bindPopup('<b>'+feature.properties.Farm_Name+"</b><br>"+feature.properties.Address+"<br>"+feature.properties.City+', KY')},
@@ -95,7 +95,7 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
 			});
 		    }
 		})
-	    });
+    });
     
 // Get geojson background layers
         $.getJSON("data/urban_areas.geojson", function(data) {
@@ -153,8 +153,8 @@ var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{
     var userLayers = {
         "Brewers": brewers,
         "Distillers": distillers,
-        "Millers & Bakeries": millers
-	"Farmers": farmers
+        "Millers & Bakeries": millers,
+	    "Farmers": farmers
     };
     
     var colorLayers = {
